@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using TMPro;
 
 [System.Serializable]
 public class ToDo           
@@ -13,18 +14,24 @@ public class ToDo
     
 public class APIManager : MonoBehaviour
 {
-    [SerializeField] string url = "https://jsonplaceholder.typicode.com/todos/1";
+    [SerializeField] string url;
     [SerializeField] int id;
     [SerializeField] string title;
     [SerializeField] bool completed;
+    [SerializeField] TextMeshProUGUI idText;
+    [SerializeField] TextMeshProUGUI titleText;
+    [SerializeField] TextMeshProUGUI completedText;
+
 
     void Start()
     {
         StartCoroutine(GetData());
+        
     }
 
     IEnumerator GetData()
     {
+        url = "https://jsonplaceholder.typicode.com/todos/3";
         using (UnityWebRequest request = UnityWebRequest.Get(url))  // 1. Send the web request
         {
             yield return request.SendWebRequest();
@@ -34,10 +41,8 @@ public class APIManager : MonoBehaviour
                 Debug.LogError("The error: " + request.error);
                 yield break;
             }
-            //else Debug.Log("Succcessful");
-
+            
             string jsonText = request.downloadHandler.text;         // 3. Get the raw text (JSON)
-            //Debug.Log("Raw JSON received: " + jsonText);
 
             ToDo todo = JsonUtility.FromJson<ToDo>(jsonText);       // 4. Automatically convert JSON text into your C# object
 
@@ -48,6 +53,10 @@ public class APIManager : MonoBehaviour
             Debug.Log(id);
             Debug.Log(title);
             Debug.Log(completed);
+
+            idText.text = $"{id}";
+            titleText.text = $"{title}";
+            completedText.text = $"{completed}";
         }
         
 
