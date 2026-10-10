@@ -47,7 +47,7 @@ public class APIManager : MonoBehaviour
             ToDo todo = JsonUtility.FromJson<ToDo>(jsonText);       // 4. Automatically convert JSON text into your C# object
 
             id = todo.id;
-            title = "Title: " + todo.title;
+            title = todo.title;
             completed = todo.completed;
 
             Debug.Log(id);
